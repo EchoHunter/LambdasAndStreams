@@ -2,7 +2,9 @@ package _03_minesweeper;
 
 import processing.core.PApplet;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /*
@@ -64,6 +66,7 @@ public class Minesweeper extends PApplet {
      * *Note* This can be done using a for loop, but try to do it with Streams.
      */
     void revealAllCells() {
+        Arrays.stream(cells.toArray()).forEach((cell) -> (cell.revealed));
         System.err.println("ERROR: You have to implement the *revealAllCells* method");
     }
 
@@ -77,6 +80,10 @@ public class Minesweeper extends PApplet {
      *  noneMatch() // returns true if no items in the stream match the condition
      */
     boolean checkWin() {
+        Arrays.stream(cells.toArray()).filter((c) -> c.mine == true);
+        if (Arrays.stream(cells.toArray()).forEach((c) -> !c.revealed)){
+            return true;
+        }
         System.err.println("ERROR: You have to implement the *checkWin* method");
         return false;
     }
@@ -98,6 +105,14 @@ public class Minesweeper extends PApplet {
      *        - - - -
      */
     void revealCell(Cell cell) {
+        if(!cell.mine){
+            cell.revealed = true;
+            if (cell.minesAround == 0){
+                List<Cell> c = getNeighbors(cell);
+                Arrays.stream(c.toArray()).filter((cell1) -> (cell1.mine == false));
+                Arrays.stream(c.toArray()).forEach((cell1) -> (cell1.revealed == true));
+            }
+        }
         System.err.println("ERROR: You have to implement the *revealCell* method");
     }
 
@@ -113,6 +128,8 @@ public class Minesweeper extends PApplet {
      * 6. Use reduce() or sum() to count the number of 1s, i.e. mines
      */
     void setNumberOfSurroundingMines() {
+        cells.stream().forEach((cell) -> cell.getNeighbors());
+
         System.err.println("ERROR: You have to implement the *setNumberOfSurroundingMines* method");
     }
 
